@@ -16,6 +16,10 @@ PrefabInstance:
       propertyPath: m_Offset.y
       value: 0.28
       objectReference: {fileID: 0}
+    - target: {fileID: 6522863241219038061, guid: 65e150be119e207418692634ba70e007, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 1.364
+      objectReference: {fileID: 0}
     - target: {fileID: 6961866468020844180, guid: 65e150be119e207418692634ba70e007, type: 3}
       propertyPath: m_Color.b
       value: 0.13536847
@@ -88,6 +92,17 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: -4775222095193412228}
   m_SourcePrefab: {fileID: 100100000, guid: 65e150be119e207418692634ba70e007, type: 3}
+--- !u!114 &2977733882297061649 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1781215646805099377, guid: 65e150be119e207418692634ba70e007, type: 3}
+  m_PrefabInstance: {fileID: 3597020412918731360}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d44227010ebc98e4888695e0b7f054fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6458519940231835279 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7514936212060257519, guid: 65e150be119e207418692634ba70e007, type: 3}
@@ -106,3 +121,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 50
+  hpBar: {fileID: 2977733882297061649}
+  attackDelay: 3
+  attackDamage: 3
+  stoppingDistance: 1
+  moveSpeed: 2

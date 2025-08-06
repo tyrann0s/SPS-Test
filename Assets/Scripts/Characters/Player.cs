@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using Unity.Android.Types;
 using UnityEngine;
 
 public class Player : Character
@@ -8,9 +7,18 @@ public class Player : Character
     [SerializeField] private Transform projectileSpawnPoint;
     [SerializeField] private GameObject projectilePrefab;
 
-    private void Start()
+    public Action<float> OnHPChanged;
+    public Action<float> OnDamageChanged;
+    public Action<float> OnAttackSpeedChanged;
+
+    protected override void Start()
     {
+        base.Start();
         StartCoroutine(Shot());
+        
+        OnHPChanged?.Invoke(health);
+        OnDamageChanged?.Invoke(attackDamage);
+        OnAttackSpeedChanged?.Invoke(attackDelay);
     }
 
     private IEnumerator Shot()
@@ -18,11 +26,11 @@ public class Player : Character
         while (true)
         {
             Transform target = GetClosestTarget();
-            if (target != null)
+            if (target)
             {
                 GameObject go = Instantiate(projectilePrefab, projectileSpawnPoint.position, Quaternion.identity);
                 Projectile projectile = go.GetComponent<Projectile>();
-                projectile.Initialize(10f, target.gameObject);
+                projectile.Initialize(attackDamage, target.gameObject);
                 Rigidbody2D projectileRb = go.GetComponent<Rigidbody2D>();
 
                 Vector3 direction = (target.position - projectileSpawnPoint.position);
@@ -37,7 +45,7 @@ public class Player : Character
 
                 projectileRb.linearVelocity = velocityVector;
             }
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(attackDelay);
         }
     }
 
@@ -62,5 +70,36 @@ public class Player : Character
         }
 
         return closestEnemy;
+    }
+
+    public void IncreaseDamage(float amount)
+    {
+        attackDamage += amount;
+        OnDamageChanged?.Invoke(attackDamage);
+    }
+
+    public void IncreaseAttackSpeed(float amount)
+    {
+        attackDelay -= amount;
+        OnAttackSpeedChanged?.Invoke(attackDelay);
+    }
+    
+    public void IncreaseHealth(float amount)
+    {
+        health += amount;
+        hpBar.IncreaseHealth(amount);
+        OnHPChanged?.Invoke(health);
+    }
+
+    protected override void Died()
+    {
+        UIManager.Instance.ShowEndgamePanel("You lose!");
+        base.Died();
+    }
+
+    public override void TakeDamage(float damage)
+    {
+        base.TakeDamage(damage);
+        OnHPChanged?.Invoke(health);
     }
 }
